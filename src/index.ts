@@ -3,6 +3,7 @@
 import * as core from "@actions/core";
 import { preparePrompt } from "./prepare-prompt";
 import { runClaude } from "./run-claude";
+import { setupClaudeCodeSettings } from "./setup-claude-code-settings";
 import { validateEnvironmentVariables } from "./validate-env";
 import { setupOAuthCredentials } from "./setup-oauth";
 
@@ -18,6 +19,8 @@ async function run() {
         expiresAt: process.env.CLAUDE_EXPIRES_AT!,
       });
     }
+
+    await setupClaudeCodeSettings();
 
     const promptConfig = await preparePrompt({
       prompt: process.env.INPUT_PROMPT || "",

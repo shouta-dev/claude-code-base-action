@@ -81,6 +81,26 @@ Add the following to your workflow file:
 | `conclusion`     | Execution status of Claude Code ('success' or 'failure')   |
 | `execution_file` | Path to the JSON file containing Claude Code execution log |
 
+## Environment Variables
+
+The following environment variables can be used to configure the action:
+
+| Variable       | Description                                           | Default |
+| -------------- | ----------------------------------------------------- | ------- |
+| `NODE_VERSION` | Node.js version to use (e.g., '18.x', '20.x', '22.x') | '18.x'  |
+
+Example usage:
+
+```yaml
+- name: Run Claude Code with Node.js 20
+  uses: anthropics/claude-code-base-action@beta
+  env:
+    NODE_VERSION: "20.x"
+  with:
+    prompt: "Your prompt here"
+    anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+```
+
 ## Using MCP Config
 
 You can provide a custom MCP configuration file to dynamically load MCP servers:
@@ -365,7 +385,7 @@ anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
 ```
 
 This applies to all sensitive values including API keys, access tokens, and credentials.
-We also reccomend that you always use short-lived tokens when possible
+We also recommend that you always use short-lived tokens when possible
 
 ## License
 
