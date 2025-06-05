@@ -30,6 +30,10 @@ inputs:
     description: "MCP configuration as JSON string or path to MCP configuration JSON file"
     required: false
     default: ""
+  skip_permissions:
+    description: "Skip permission checks (dangerous - use with caution)"
+    required: false
+    default: "false"
   model:
     description: "Model to use (provider-specific format required for Bedrock/Vertex)"
     required: false
@@ -130,6 +134,7 @@ runs:
         INPUT_DISALLOWED_TOOLS: ${{ inputs.disallowed_tools }}
         INPUT_MAX_TURNS: ${{ inputs.max_turns }}
         INPUT_MCP_CONFIG: ${{ inputs.mcp_config }}
+        INPUT_SKIP_PERMISSIONS: ${{ inputs.skip_permissions }}
         INPUT_TIMEOUT_MINUTES: ${{ inputs.timeout_minutes }}
 
         # Provider configuration
