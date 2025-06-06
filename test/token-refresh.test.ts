@@ -82,6 +82,7 @@ describe("Token Refresh", () => {
         ok: false,
         status: 400,
         statusText: "Bad Request",
+        text: () => Promise.resolve("Invalid refresh token"),
       });
 
       await expect(refreshAccessToken("invalid-token")).rejects.toThrow(

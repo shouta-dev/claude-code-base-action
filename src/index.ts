@@ -6,7 +6,7 @@ import { runClaude } from "./run-claude";
 import { setupClaudeCodeSettings } from "./setup-claude-code-settings";
 import { validateEnvironmentVariables } from "./validate-env";
 import { setupOAuthCredentials } from "./setup-oauth";
-import { ensureValidToken } from "./token-refresh";
+import { refreshAccessToken } from "./token-refresh";
 
 async function run() {
   try {
@@ -20,8 +20,9 @@ async function run() {
         expiresAt: process.env.CLAUDE_EXPIRES_AT!,
       };
 
-      // Check if token needs refresh and update if necessary
-      const validCredentials = await ensureValidToken(initialCredentials);
+      // Always refresh token to ensure it's valid
+      console.log('Refreshing OAuth token...');
+      const validCredentials = await refreshAccessToken(initialCredentials.refreshToken);
       
       await setupOAuthCredentials(validCredentials);
     }

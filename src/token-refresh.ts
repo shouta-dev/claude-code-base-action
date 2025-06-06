@@ -15,6 +15,8 @@ export function isTokenExpiringSoon(credentials: OAuthCredentials, bufferMinutes
 }
 
 export async function refreshAccessToken(refreshToken: string): Promise<OAuthCredentials> {
+  console.log('Making token refresh request...');
+  
   const response = await fetch('https://api.anthropic.com/v1/oauth/token', {
     method: 'POST',
     headers: {
@@ -27,10 +29,14 @@ export async function refreshAccessToken(refreshToken: string): Promise<OAuthCre
   });
 
   if (!response.ok) {
-    throw new Error(`Token refresh failed: ${response.status} ${response.statusText}`);
+    const errorText = await response.text();
+    console.error(`Token refresh failed: ${response.status} ${response.statusText}`);
+    console.error(`Response body: ${errorText}`);
+    throw new Error(`Token refresh failed: ${response.status} ${response.statusText} - ${errorText}`);
   }
 
   const data = await response.json() as RefreshTokenResponse;
+  console.log('Token refresh successful');
   
   return {
     accessToken: data.access_token,
