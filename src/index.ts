@@ -6,6 +6,7 @@ import { runClaude } from "./run-claude";
 import { setupClaudeCodeSettings } from "./setup-claude-code-settings";
 import { validateEnvironmentVariables } from "./validate-env";
 import { setupOAuthCredentials } from "./setup-oauth";
+import { ensureValidToken } from "./token-refresh";
 
 async function run() {
   try {
@@ -13,11 +14,16 @@ async function run() {
 
     // Setup OAuth credentials if using OAuth authentication
     if (process.env.CLAUDE_CODE_USE_OAUTH === "1") {
-      await setupOAuthCredentials({
+      const initialCredentials = {
         accessToken: process.env.CLAUDE_ACCESS_TOKEN!,
         refreshToken: process.env.CLAUDE_REFRESH_TOKEN!,
         expiresAt: process.env.CLAUDE_EXPIRES_AT!,
-      });
+      };
+
+      // Check if token needs refresh and update if necessary
+      const validCredentials = await ensureValidToken(initialCredentials);
+      
+      await setupOAuthCredentials(validCredentials);
     }
 
     await setupClaudeCodeSettings();

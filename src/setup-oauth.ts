@@ -2,7 +2,7 @@ import { mkdir, writeFile } from "fs/promises";
 import { join } from "path";
 import { homedir } from "os";
 
-interface OAuthCredentials {
+export interface OAuthCredentials {
   accessToken: string;
   refreshToken: string;
   expiresAt: string;
